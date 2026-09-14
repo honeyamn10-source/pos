@@ -1,6 +1,10 @@
-# Jawa Restaurant — installable server edition
+# Jawa Restaurant
 
-Separate restaurant register with shared inventory, kitchen and back office.
+A self-hosted restaurant register for cash sales, tables, kitchen workflows, inventory, and online pickup requests.
+
+**Edition:** Installable server · **Version:** 0.4 · **Stage:** Controlled pilot
+
+[Deployment handbook](docs/CUSTOMER_DEPLOYMENT.md) · [Quick setup](docs/EASY_SETUP.md) · [Validation record](docs/SERVER_VALIDATION.md) · [Release readiness](docs/COMMERCIAL_LAUNCH_CHECKLIST.md)
 
 ## Version 0.4: start here
 
