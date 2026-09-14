@@ -1,3 +1,5 @@
+![Jawa Restaurant — project cover](https://github.com/honeyamn10-source/honeyamn10-source/blob/main/assets/pos.svg?raw=true)
+
 # Jawa Restaurant
 
 A self-hosted restaurant register for cash sales, tables, kitchen workflows, inventory, and online pickup requests.
