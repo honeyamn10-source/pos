@@ -1,13 +1,17 @@
 # ADR-0001: Record Architecture Decisions
+
 - Status: Accepted
 - Date: 2026-09-16
 - Deciders: Bittu Sharma, CI
 
 ## Context
-pos professionalized as part of Honeyamn10 ultra-level portfolio pass.
+pos is a self-hosted restaurant register. Architectural decisions affect
+security, data integrity, and operational reliability.
 
 ## Decision
-ADR trail under `docs/decisions/`, one numbered file per cross-cutting choice.
+Use ADR format under `docs/decisions/` for cross-cutting architectural choices.
 
 ## Consequences
-Settled questions stay settled; PRs reference a decision, not a vibe.
+- Settled questions stay settled
+- New contributors can understand rationale quickly
+- CI validates ADR presence
