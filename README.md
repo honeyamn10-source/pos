@@ -1,34 +1,28 @@
-<p align="center">
-  <img src="https://github.com/honeyamn10-source/honeyamn10-source/blob/main/assets/pos.svg?raw=true" alt="Jawa Restaurant" width="100%" />
-</p>
+<p align="center"><img src="docs/assets/readme-cover.svg" alt="Jawa Restaurant — From the restaurant counter to the kitchen." width="100%"></p>
 
 <h1 align="center">Jawa Restaurant</h1>
+<p align="center"><strong>From the restaurant counter to the kitchen.</strong></p>
+<p align="center"><a href="#project-at-a-glance">Overview</a> · <a href="#start-here">Start here</a> · <a href="#project-guide">Project guide</a> · <a href="https://github.com/honeyamn10-source/pos/issues">Issues</a></p>
 
-<p align="center">
-  <b>A self-hosted restaurant register.</b>
-  <br />
-  <em>Cash sales, tables, kitchen workflows, inventory, and online pickup requests — on your own server.</em>
-</p>
+[![CI](https://github.com/honeyamn10-source/pos/actions/workflows/server-kits.yml/badge.svg)](https://github.com/honeyamn10-source/pos/actions/workflows/server-kits.yml)
 
-<p align="center">
-  <a href="https://github.com/honeyamn10-source/pos/actions/workflows/server-kits.yml"><img src="https://github.com/honeyamn10-source/pos/actions/workflows/server-kits.yml/badge.svg" alt="CI"></a>
-</p>
+Self-hosted cash register, tables, kitchen and pickup workflows.
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
-  <a href="product.json"><img src="https://img.shields.io/badge/version-0.5-blue.svg" alt="Version: 0.5"></a>
-  <a href="https://github.com/honeyamn10-source/pos/blob/main/docs/SERVER_VALIDATION.md"><img src="https://img.shields.io/badge/stage-controlled%20pilot-important.svg" alt="Stage: Controlled pilot"></a>
-  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/next.js-15-000000.svg" alt="Next.js 15"></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/typescript-5-3178C6.svg" alt="TypeScript"></a>
-</p>
+## Project at a glance
 
----
+| Current scope | Release boundary |
+| --- | --- |
+| **Controlled pilot** | Long-term order storage and physical integrations remain release gates. |
 
-**Edition:** Installable server · **Stage:** Controlled pilot
+![Existing project preview](docs/screenshots/jawa-restaurant-register-20260911.jpg)
 
-Self-host means your data stays yours: no cloud subscription, no forced login, no merchant database on a third-party server. Orders, receipts, inventory, and backups persist on a server you control.
+<sub>Preview from the repository; it does not certify untested integrations.</sub>
 
-> **Status: installable controlled pilot, not a completed commercial POS.** Cash sales/returns, inventory, tables, kitchen, online pickup requests, staff action permissions, and encrypted backup/recovery work in the tested scenarios. Live card payments, native DoorDash/Uber/Skip connections, physical printer acceptance and real phone-call activation remain unfinished or unverified. The current bounded store supports at most 1,000 orders; long-term storage is a remaining release gate.
+## Start here
+
+Use the setup commands in the project guide below. Check configuration and current workflow results before deploying.
+
+## Project guide
 
 ## 🚀 Quick start
 
@@ -80,7 +74,7 @@ pos/
 ├── scripts/             # Build & operational helpers
 ├── tests/               # Test suite
 ├── START_JAWA.*         # Desktop launcher scripts
-└── docs/                # Documentation
+└── README.md            # Project guide
 ```
 
 ## 🛡️ Security
