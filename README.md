@@ -1,6 +1,10 @@
 <!-- pos | Bittu Sharma | ultra-level professional README -->
 <p align="center">
-  <img src="docs/assets/logo.svg" alt="POS logo" width="100%" />
+  <img src="docs/assets/logo.svg" alt="pos logo" width="100%" />
+</p>
+
+
+<p align="center">
 </p>
 
 
