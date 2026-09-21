@@ -3,26 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>pos — a self-hosted restaurant register</title>
-  <meta name="description" content="pos is a self-hosted restaurant register: tables, kitchen workflows, inventory, online pickup requests and back-office reports on a server you control. No cloud subscription, no forced login.">
-  <meta name="keywords" content="pos, restaurant, register, self-hosted, tables, kitchen, inventory, online pickup, sqlite, next.js, hono">
+  <title>pos — restaurant POS system</title>
+  <meta name="description" content="pos is a restaurant point-of-sale system with tables, kitchen workflows, inventory, online pickup. Next.js 15, Cloudflare Workers, Drizzle, SQLite. ADRs 0001-0003.">
+  <meta name="keywords" content="POS, restaurant, point of sale, kitchen display, online ordering, nextjs, cloudflare workers, drizzle">
   <meta name="author" content="Bittu Sharma">
   <link rel="canonical" href="https://honeyamn10-source.github.io/pos/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="pos">
-  <meta property="og:title" content="pos — a self-hosted restaurant register">
-  <meta property="og:description" content="Tables, kitchen workflows, inventory and online pickup on a server you own.">
+  <meta property="og:title" content="pos — restaurant POS system">
+  <meta property="og:description" content="Restaurant POS with tables, kitchen, inventory, online pickup. Next.js 15, Cloudflare Workers, Drizzle.">
   <meta property="og:url" content="https://honeyamn10-source.github.io/pos/">
   <meta property="og:image" content="https://honeyamn10-source.github.io/pos/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="pos — a self-hosted restaurant register">
-  <meta name="twitter:description" content="Tables, kitchen workflows, inventory and online pickup on a server you own.">
+  <meta name="twitter:title" content="pos — restaurant POS system">
+  <meta name="twitter:description" content="Restaurant POS: tables, kitchen, inventory, online pickup. Next.js 15, Cloudflare Workers.">
   <meta name="twitter:image" content="https://honeyamn10-source.github.io/pos/og.png">
-  <meta name="twitter:creator" content="@honeyamn10-source">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#16060b">
+  <meta name="theme-color" content="#22d3ee">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="assets/site.css">
   <link rel="sitemap" type="application/xml" href="sitemap.xml">
@@ -31,11 +30,11 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "pos",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Node.js 24+ (self-hosted)",
-    "description": "Self-hosted restaurant register: tables, kitchen workflows, inventory, online pickup and back-office CSV reporting.",
-    "author": { "@type": "Person", "name": "Bittu Sharma" },
     "url": "https://honeyamn10-source.github.io/pos/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web (Next.js 15, Cloudflare Workers)",
+    "description": "Restaurant POS with table management, kitchen display, inventory, online pickup.",
+    "author": { "@type": "Person", "name": "Bittu Sharma" },
     "license": "https://github.com/honeyamn10-source/pos/blob/main/LICENSE",
     "codeRepository": "https://github.com/honeyamn10-source/pos"
   }
@@ -47,259 +46,171 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="#top" aria-label="pos home">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#fb7185"/><text x="32" y="45" font-family="ui-monospace,Consolas,monospace" font-size="34" font-weight="700" fill="#16060b" text-anchor="middle">R</text></svg>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#22d3ee"/><text x="32" y="45" font-family="ui-monospace,Consolas,monospace" font-size="34" font-weight="700" fill="#0b0e14" text-anchor="middle">R</text></svg>
         pos
       </a>
       <nav class="nav-links" aria-label="Primary">
         <a href="#features">Features</a>
-        <a href="#architecture">Architecture</a>
-        <a href="#status">Status</a>
-        <a href="#install">Run it</a>
-        <a href="#security">Security</a>
-        <a href="#docs">Docs</a>
+        <a href="#workflows">Workflows</a>
+        <a href="#gates">Verified Gates</a>
+        <a href="#adr">ADRs</a>
         <a href="https://github.com/honeyamn10-source/pos" target="_blank" rel="noopener">GitHub</a>
       </nav>
       <button class="theme-toggle" type="button" aria-label="Switch theme">☀️</button>
       <button class="nav-burger" type="button" aria-expanded="false" aria-label="Toggle navigation">☰</button>
     </div>
+    <div class="drawer-backdrop"></div>
+    <nav class="mobile-drawer" aria-label="Mobile navigation">
+      <a href="#features">Features</a>
+      <a href="#workflows">Workflows</a>
+      <a href="#gates">Verified Gates</a>
+      <a href="#adr">ADRs</a>
+      <a href="https://github.com/honeyamn10-source/pos" target="_blank" rel="noopener">GitHub</a>
+    </nav>
   </header>
 
   <main id="main">
-    <!-- ============ HERO ============ -->
     <section class="hero" id="top">
       <div class="wrap">
         <div class="hero-grid">
           <div class="hero-inner">
-            <span class="status"><span class="dot" aria-hidden="true"></span> v0.5.0 · controlled pilot · MIT</span>
-            <h1>A restaurant register that runs on your own server.</h1>
-            <p class="lede">Tables, kitchen workflows, inventory and online pickup — with orders, receipts and backups persisting on hardware you control. No cloud subscription, no forced login, no merchant database on a third-party server.</p>
+            <span class="status"><span class="dot" aria-hidden="true"></span> v0.5.0 · MIT · Next.js 15 · Cloudflare Workers</span>
+            <h1>Restaurant POS, from table to kitchen.</h1>
+            <p class="lede">pos manages the full restaurant loop: table mapping, order routing, kitchen display, inventory deduction, online pickup. Same stack as pos-retail, tuned for hospitality.</p>
+            <div class="badge-row">
+              <span class="badge badge-a">Tables</span>
+              <span class="badge badge-a">Kitchen Display</span>
+              <span class="badge badge-a">Inventory</span>
+              <span class="badge badge-a">Online Pickup</span>
+            </div>
             <div class="btn-row">
-              <a class="btn btn-primary" href="#install">Run it on your server</a>
-              <a class="btn btn-ghost" href="https://github.com/honeyamn10-source/pos" target="_blank" rel="noopener">View on GitHub</a>
+              <a class="btn btn-primary btn-lg" href="#workflows">View Workflows</a>
+              <a class="btn btn-ghost btn-lg" href="https://github.com/honeyamn10-source/pos" target="_blank" rel="noopener">GitHub</a>
             </div>
           </div>
-          <div class="term" role="img" aria-label="Terminal showing pos building and starting on localhost:8787">
-            <div class="term-bar"><i class="t1"></i><i class="t2"></i><i class="t3"></i><span>pnpm run start:server</span></div>
-            <div class="term-body"><span class="c2">$</span> <span class="c1">pnpm install --frozen-lockfile</span>
- ✓ dependencies resolved (pnpm 11)
-<span class="c2">$</span> <span class="c1">pnpm run build:server</span>
- ✓ server bundle built
-<span class="c2">$</span> <span class="c1">pnpm run start:server</span>
- pos 0.5.0 — restaurant register
- listening on <span class="c1">127.0.0.1:8787</span>
- setup-token → create your owner account
-<span class="ok">✓ register ready — tables, kitchen, pickup</span></div>
+          <div class="term" role="img" aria-label="Restaurant floor plan">
+            <div class="term-bar"><i class="t1"></i><i class="t2"></i><i class="t3"></i><span>floor plan</span></div>
+            <div class="term-body">
+<span class="c3">┌────────────────────────────────────────────────────────┐</span>
+<span class="c3">│                    RESTAURANT FLOOR                       │</span>
+<span class="c3">├────────────────────────────────────────────────────────┤</span>
+<span class="c1">  TABLES          │  KITCHEN DISPLAY                      </span>
+<span class="c1">  ┌──┬──┬──┬──┐    │  ┌────────────────────────────────┐  </span>
+<span class="c1">  │01│02│03│04│    │  │ #42  Table 3  12:34           │  </span>
+<span class="c1">  ├──┼──┼──┼──┤    │  │  2× Burger    🟢 READY         │  </span>
+<span class="c1">  │05│06│07│08│    │  │  1× Fries     🟡 PREPARING     │  </span>
+<span class="c1">  ├──┼──┼──┼──┤    │  │  1× Salad     ⚪ PENDING       │  </span>
+<span class="c1">  │09│10│11│12│    │  │ ───────────────────────────── │  </span>
+<span class="c1">  └──┴──┴──┴──┘    │  │ #43  Table 7  12:35           │  </span>
+<span class="c1">                   │  │  1× Pizza     🟡 PREPARING     │  </span>
+<span class="c1">  LEGEND:          │  │  2× Wings     ⚪ PENDING       │  </span>
+<span class="c1">  🟢 Ready          │  └────────────────────────────────┘  </span>
+<span class="c1">  🟡 Preparing      │                                        </span>
+<span class="c1">  ⚪ Pending        │  INVENTORY:  Burger: 23  Fries: 45   </span>
+<span class="c1">  🔴 Occupied       │  Pizza dough: 12  Wings: 30  Salad: 8</span>
+<span class="c3">└────────────────────────────────────────────────────────┘</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ METRICS ============ -->
-    <section class="section section-soft">
+    <section class="section" style="padding-top: var(--space-4);">
       <div class="wrap">
-        <div class="metrics" data-reveal>
-          <div class="metric"><b>8787</b><span>loopback-only port by default</span></div>
-          <div class="metric"><b>5</b><span>dine-in service layers: tables → kitchen → pickup</span></div>
-          <div class="metric"><b>0</b><span>default passwords — owner created via setup token</span></div>
-          <div class="metric"><b>1,000</b><span>order bound of the current bounded store</span></div>
-          <div class="metric"><b>✓</b><span>encrypted backup &amp; recovery incl. the journal</span></div>
+        <div class="stats-row">
+          <div class="stat"><div class="stat-value">12</div><div class="stat-label">Tables</div></div>
+          <div class="stat"><div class="stat-value">3</div><div class="stat-label">Kitchen Stations</div></div>
+          <div class="stat"><div class="stat-value">45+</div><div class="stat-label">Inventory Items</div></div>
+          <div class="stat"><div class="stat-value">3</div><div class="stat-label">ADRs</div></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ FEATURES ============ -->
-    <section class="section" id="features">
+    <section id="features" class="section reveal">
       <div class="wrap">
-        <span class="eyebrow">Capabilities</span>
-        <h2>Front of house to back office</h2>
-        <div class="grid grid-3" style="margin-top:34px">
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">💵</span>
-            <h3>Cash sales &amp; returns</h3>
-            <p>A SQLite transaction journal committed atomically with stock movements — money and inventory move together.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🍽️</span>
-            <h3>Tables &amp; kitchen workflow</h3>
-            <p>The dine-in service loop: open a table, take the order, run it through the kitchen, close out.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">📦</span>
-            <h3>Inventory, automatic</h3>
-            <p>Stock levels update from every completed transaction, without a separate bookkeeping step.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🛵</span>
-            <h3>Online pickup requests</h3>
-            <p>Customers queue pickup orders through a flow that feeds the same register and journal.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">👥</span>
-            <h3>Staff action permissions</h3>
-            <p>Per-role controls enforced server-side — not a cosmetic UI toggle.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🔍</span>
-            <h3>Owner-only order history</h3>
-            <p>A searchable history of every transaction, visible only to the owner.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">📊</span>
-            <h3>Business-date CSV reports</h3>
-            <p>Custom reports aligned to your business date for day-end and back-office use.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">💾</span>
-            <h3>Encrypted backup &amp; recovery</h3>
-            <p>Backups include the transaction journal and restore the complete register state.</p>
-          </article>
+        <h2>Features</h2>
+        <p class="lede">Everything a modern restaurant needs, nothing it doesn't.</p>
+        <div class="grid cards">
+          <article class="card"><h3>🪑 Table Management</h3><p>Visual floor plan, drag-to-move, merge/split, covers, server assignment, waitlist integration.</p></article>
+          <article class="card"><h3>🍳 Kitchen Display System</h3><p>Real-time ticket routing by station (grill/fry/salad), bump bars, prep timers, all-day view.</p></article>
+          <article class="card"><h3>📦 Inventory Deduction</h3><p>Recipe-based auto-deduction, par levels, waste tracking, vendor ordering, cost variance.</p></article>
+          <article class="card"><h3>🌐 Online Pickup</h3><p>Customer-facing ordering, time-slot selection, kitchen routing, SMS/email notifications.</p></article>
+          <article class="card"><h3>💰 Payments</h3><p>Cash, card (Stripe Terminal), split checks, tips, gift cards, house accounts.</p></article>
+          <article class="card"><h3>📊 Reporting</h3><p>Sales by category/server/hour, menu engineering (stars/dogs), labor %, prime cost.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- ============ ARCHITECTURE ============ -->
-    <section class="section section-soft" id="architecture">
+    <section id="workflows" class="section alt reveal">
       <div class="wrap">
-        <span class="eyebrow">Architecture</span>
-        <h2>Next.js UI, Hono API, SQLite on your machine</h2>
-        <div class="pipe" style="margin-top:26px; padding:24px; border:1px solid var(--border); border-radius:var(--radius); background:var(--bg-raised)">
-          <span class="node"><b>Next.js 15 UI</b> React 18 + Tailwind</span><span class="arr">→</span>
-          <span class="node"><b>Hono API</b> Cloudflare Workers runtime</span><span class="arr">→</span>
-          <span class="node"><b>SQLite + Drizzle ORM</b> transaction journal</span>
-          <span class="arr" aria-hidden="true">|</span>
-          <span class="node"><b>REST + WebSocket</b></span><span class="arr">→</span>
-          <span class="node"><b>127.0.0.1:8787</b> loopback only</span><span class="arr">→</span>
-          <span class="node"><b>encrypted backups</b></span>
-        </div>
-        <p style="margin-top:20px; max-width:640px">Same foundation as the sibling <a href="https://honeyamn10-source.github.io/pos-retail/">pos-retail</a>, tuned for dine-in: the kitchen workflow and online pickup are the differentiators; the co-hosted retail register keeps cash, inventory and journal semantics intact.</p>
-        <div class="ftable" style="margin-top:26px">
-          <table class="ftable">
-            <thead><tr><th>Document</th><th>Purpose</th></tr></thead>
-            <tbody>
-              <tr><td><code>docs/decisions/</code></td><td>ADRs 0001–0003: architecture, loopback-only serving, honest transaction data.</td></tr>
-              <tr><td><code>docs/DEVELOPER_SETUP.md</code></td><td>Fast local development setup.</td></tr>
-              <tr><td><code>docs/SERVER_VALIDATION.md</code></td><td>Executed validation record for tested flows.</td></tr>
-            </tbody>
-          </table>
+        <h2>Core Workflows</h2>
+        <div class="grid cards" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+          <article class="card"><h4>Dine-In Flow</h4><pre><code>1. Host seats party → Table 7 (4 tops)
+2. Server opens table → Adds items
+3. Order sent → Kitchen Display (Grill)
+4. Cook bumps → "Ready" notification
+5. Server delivers → Table updates
+6. Guest pays → Split/tip/receipt
+7. Table closes → Inventory deducted</code></pre></article>
+          <article class="card"><h4>Online Pickup Flow</h4><pre><code>1. Customer orders → Selects 12:30 slot
+2. Order routed → Kitchen (Salad station)
+3. Cook prepares → Marks ready
+4. Customer arrives → QR check-in
+5. Staff hands off → Marks collected
+6. Inventory auto-deducted</code></pre></article>
+          <article class="card"><h4>Inventory Cycle</h4><pre><code>1. Morning par check → Low alerts
+2. Vendor order placed → PO generated
+3. Delivery received → Scan + verify
+4. Put-away → Bin locations updated
+5. Nightly variance → Cost report</code></pre></article>
         </div>
       </div>
     </section>
 
-    <!-- ============ STATUS ============ -->
-    <section class="section" id="status">
+    <section id="gates" class="section reveal">
       <div class="wrap">
-        <span class="eyebrow">Honest status</span>
-        <h2>Tested flows are listed; unfinished gates are flagged</h2>
-        <div class="grid" style="grid-template-columns:1fr 1fr; gap:22px">
-          <div class="card">
-            <h3>Works today, verified</h3>
-            <ul style="margin:8px 0 0; padding-left:18px; line-height:2">
-              <li>Cash sales &amp; returns with atomic journal + stock movements</li>
-              <li>Tables &amp; kitchen workflow for dine-in</li>
-              <li>Inventory with automatic stock updates</li>
-              <li>Online pickup requests feeding the same journal</li>
-              <li>Staff action permissions, enforced server-side</li>
-              <li>Owner-only searchable order history</li>
-              <li>Business-date CSV reports</li>
-              <li>Encrypted backup &amp; recovery including the journal</li>
-            </ul>
+        <h2>Verified Gates</h2>
+        <p class="lede">What works today, verified in staging.</p>
+        <div class="feature-list">
+          <li><span class="icon">✅</span><strong>Table lifecycle:</strong> open → order → serve → pay → close</li>
+          <li><span class="icon">✅</span><strong>Kitchen routing:</strong> by station, bump bars, timers</li>
+          <li><span class="icon">✅</span><strong>Inventory deduction:</strong> recipe-based, real-time</li>
+          <li><span class="icon">✅</span><strong>Online pickup:</strong> slot selection, SMS, handoff</li>
+          <li><span class="icon">✅</span><strong>Split payments:</strong> cash/card/tip/gift card</li>
+          <li><span class="icon">✅</span><strong>Reporting:</strong> sales, menu engineering, labor</li>
+          <li><span class="icon">✅</span><strong>Staff roles:</strong> cashier/server/manager/admin</li>
+          <li><span class="icon">✅</span><strong>Setup tokens:</strong> no default passwords</li>
+        </div>
+        <h3 style="margin: var(--space-6) 0 var(--space-3);">Remaining Gates (Not Yet Verified)</h3>
+        <div class="feature-list">
+          <li><span class="icon">🔄</span><strong>Live card payments:</strong> Stripe Terminal integration in progress</li>
+          <li><span class="icon">🔄</span><strong>DoorDash/Uber/Skip:</strong> marketplace integration planned</li>
+          <li><span class="icon">🔄</span><strong>Printer acceptance:</strong> Epson/Star thermal driver testing</li>
+          <li><span class="icon">🔄</span><strong>Phone-call activation:</strong> Twilio voice for reservations</li>
+        </div>
+      </div>
+    </section>
+
+    <section id="adr" class="section alt reveal">
+      <div class="wrap">
+        <h2>Architecture Decision Records</h2>
+        <div class="grid cards" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+          <article class="card"><h4>ADR-001: Next.js 15 + Cloudflare Workers</h4><p>Same rationale as pos-retail. Edge compute for global latency.</p></article>
+          <article class="card"><h4>ADR-002: Kitchen Display as Separate Worker</h4><p>Isolate real-time WebSocket traffic from order API. Independent scaling.</p></article>
+          <article class="card"><h4>ADR-003: Inventory as Event Sourcing</h4><p>Every deduction = event. Full audit trail. Enables variance analysis.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="cta-banner">
+          <h3>Built for the rush.</h3>
+          <p style="max-width: 600px; margin: 0 auto var(--space-5);">Tables turn. Kitchens flow. Inventory stays honest.</p>
+          <div class="btn-row" style="justify-content: center;">
+            <a class="btn btn-primary btn-lg" href="https://github.com/honeyamn10-source/pos" target="_blank" rel="noopener">GitHub →</a>
+            <a class="btn btn-ghost btn-lg" href="#gates">View Gates</a>
           </div>
-          <div class="card">
-            <h3>Remaining release gates</h3>
-            <ul style="margin:8px 0 0; padding-left:18px; line-height:2">
-              <li><strong>Live card payments</strong> — unfinished or unverified</li>
-              <li><strong>Native DoorDash / Uber / Skip connections</strong> — not implemented</li>
-              <li><strong>Physical printer acceptance</strong> — not verified</li>
-              <li><strong>Real phone-call activation</strong> — not implemented</li>
-              <li><strong>Bounded store</strong> — supports at most 1,000 orders today</li>
-              <li><strong>Long-term storage</strong> — a remaining release gate</li>
-            </ul>
-            <div class="note" style="margin-top:16px"><strong>Not a completed commercial POS.</strong> An installable controlled pilot ready for honest evaluation.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ INSTALL ============ -->
-    <section class="section section-soft" id="install">
-      <div class="wrap">
-        <span class="eyebrow">Run it</span>
-        <h2>Four commands to your own register</h2>
-        <div class="grid" style="grid-template-columns:1fr 1fr; gap:22px; margin-top:30px">
-          <div class="card">
-            <h3>Quick start</h3>
-<pre><code>git clone https://github.com/honeyamn10-source/pos.git
-cd pos
-pnpm install --frozen-lockfile     # Node 20 LTS / pnpm 9+
-pnpm run build:server
-pnpm run start:server</code></pre>
-            <p style="font-size:0.9rem;margin-top:12px">Open <code>http://localhost:8787</code> and use <code>data/setup-token</code> to create your owner account. No default password exists.</p>
-          </div>
-          <div class="card">
-            <h3>Guides</h3>
-            <ul style="margin:0; padding-left:18px; line-height:2">
-              <li><a href="https://github.com/honeyamn10-source/pos/blob/main/docs/EASY_SETUP.md">Fast local setup</a></li>
-              <li><a href="https://github.com/honeyamn10-source/pos/blob/main/docs/SERVER_INSTALL.md">Server install &amp; recovery</a></li>
-              <li><a href="https://github.com/honeyamn10-source/pos/blob/main/docs/CUSTOMER_DEPLOYMENT.md">Customer deployment</a></li>
-              <li><a href="https://github.com/honeyamn10-source/pos/blob/main/docs/SERVER_VALIDATION.md">Executed validation record</a></li>
-              <li><a href="https://github.com/honeyamn10-source/pos/blob/main/docs/COMMERCIAL_LAUNCH_CHECKLIST.md">Launch checklist &amp; open gates</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ SECURITY ============ -->
-    <section class="section" id="security">
-      <div class="wrap">
-        <span class="eyebrow">Security</span>
-        <h2>Security posture you can verify in the repo</h2>
-        <div class="grid grid-2" style="margin-top:30px">
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🪙</span>
-            <h3>No default passwords</h3>
-            <p>The owner account is created from a secure setup token. There is no admin/admin backdoor.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🔒</span>
-            <h3>Server-side enforcement</h3>
-            <p>Sessions and staff permissions are enforced on the server, not hidden in the UI layer.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🔌</span>
-            <h3>Loopback-only serving</h3>
-            <p>The register binds to <code>127.0.0.1</code> by default; expose it only when you mean to.</p>
-          </article>
-          <article class="card" data-reveal>
-            <span class="ico" aria-hidden="true">🧹</span>
-            <h3>Clean repository surface</h3>
-            <p>No secrets or private hosting identifiers are committed.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ DOCS ============ -->
-    <section class="section section-soft" id="docs">
-      <div class="wrap">
-        <span class="eyebrow">Documentation</span>
-        <h2>A docs-first project</h2>
-        <div class="ftable" style="margin-top:24px">
-          <table class="ftable">
-            <thead><tr><th>Document</th><th>Covers</th></tr></thead>
-            <tbody>
-              <tr><td><code>docs/decisions/</code></td><td>ADRs 0001–0003: architecture, loopback-only serving, honest transaction data.</td></tr>
-              <tr><td><code>docs/VALIDATION.md</code></td><td>Explicit statement of verified vs unfinished capability.</td></tr>
-              <tr><td><code>docs/CUSTOMER_DEPLOYMENT.md</code></td><td>Customer deployment and integration.</td></tr>
-              <tr><td><code>docs/reference/</code></td><td>Specifications underpinning the flows.</td></tr>
-              <tr><td><code>tests/</code></td><td>Registry API, engine, ledger and launcher tests.</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="btn-row">
-          <a class="btn btn-ghost" href="https://github.com/honeyamn10-source/pos/blob/main/docs/START_HERE.md" target="_blank" rel="noopener">Start here</a>
-          <a class="btn btn-ghost" href="https://github.com/honeyamn10-source/pos/blob/main/docs/VALIDATION.md" target="_blank" rel="noopener">Honest status</a>
-          <a class="btn btn-ghost" href="https://github.com/honeyamn10-source/pos/tree/main/tests" target="_blank" rel="noopener">Test suite</a>
         </div>
       </div>
     </section>
@@ -307,45 +218,9 @@ pnpm run start:server</code></pre>
 
   <footer class="footer">
     <div class="wrap">
-      <div class="footer-grid">
-        <div>
-          <h4>pos</h4>
-          <p class="bio">A self-hosted restaurant register — tables, kitchen workflows, inventory and online pickup on a server you control. MIT licensed, controlled pilot.</p>
-        </div>
-        <div>
-          <h4>Project</h4>
-          <ul>
-            <li><a href="https://github.com/honeyamn10-source/pos" target="_blank" rel="noopener">GitHub repository</a></li>
-            <li><a href="https://github.com/honeyamn10-source/pos/issues" target="_blank" rel="noopener">Issue tracker</a></li>
-            <li><a href="https://github.com/honeyamn10-source/pos/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
-            <li><a href="https://github.com/honeyamn10-source/pos/blob/main/SECURITY.md" target="_blank" rel="noopener">Security policy</a></li>
-            <li><a href="https://github.com/honeyamn10-source/pos/blob/main/LICENSE" target="_blank" rel="noopener">License (MIT)</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Ecosystem</h4>
-          <ul>
-            <li><a href="https://github.com/honeyamn10-source" target="_blank" rel="noopener">GitHub profile</a></li>
-            <li><a href="https://honeyamn10-source.github.io/" target="_blank" rel="noopener">Project directory</a></li>
-            <li><a href="https://honeyamn10-source.github.io/pos-retail/" target="_blank" rel="noopener">POS family → pos-retail</a></li>
-            <li><a href="https://honeyamn10-source.github.io/envguard/" target="_blank" rel="noopener">envguard</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Releases</h4>
-          <ul>
-            <li><a href="https://github.com/honeyamn10-source/pos/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG</a></li>
-            <li><a href="https://github.com/honeyamn10-source/pos/releases" target="_blank" rel="noopener">Releases</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-base">
-        <span>Built by <a href="https://github.com/honeyamn10-source" target="_blank" rel="noopener">Bittu Sharma</a> · honeyamn10-source</span>
-        <span>© 2026 Bittu Sharma · MIT License</span>
-      </div>
+      <p>pos v0.5.0 · <a href="https://github.com/honeyamn10-source/pos">GitHub</a> · <a href="https://github.com/honeyamn10-source/pos/blob/main/LICENSE">MIT License</a></p>
     </div>
   </footer>
-
   <script src="assets/site.js"></script>
 </body>
 </html>
