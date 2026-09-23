@@ -2,6 +2,20 @@
 
 # Jawa Restaurant
 
+<!-- repo-badges:start -->
+<div align="center">
+
+[![Stars](https://img.shields.io/github/stars/honeyamn10-source/pos?style=flat-square&logo=github&label=Stars)](https://github.com/honeyamn10-source/pos/stargazers)
+[![Forks](https://img.shields.io/github/forks/honeyamn10-source/pos?style=flat-square&logo=github&label=Forks)](https://github.com/honeyamn10-source/pos/forks)
+[![Issues](https://img.shields.io/github/issues/honeyamn10-source/pos?style=flat-square&logo=github&label=Issues)](https://github.com/honeyamn10-source/pos/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/honeyamn10-source/pos?style=flat-square&logo=github&label=Last%20Commit)](https://github.com/honeyamn10-source/pos/commits/main)
+
+[Repository](https://github.com/honeyamn10-source/pos) · [Issues](https://github.com/honeyamn10-source/pos/issues) · [Pull Requests](https://github.com/honeyamn10-source/pos/pulls) · [Actions](https://github.com/honeyamn10-source/pos/actions)
+
+</div>
+<!-- repo-badges:end -->
+
+
 A self-hosted restaurant register for cash sales, table checks, kitchen batches, pickup requests and daily store operations.
 
 [Project website](https://honeyamn10-source.github.io/pos/) · [Source](https://github.com/honeyamn10-source/pos) · [Build results](https://github.com/honeyamn10-source/pos/actions) · [Issues](https://github.com/honeyamn10-source/pos/issues)
