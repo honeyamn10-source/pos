@@ -15,6 +15,18 @@
 </div>
 <!-- repo-badges:end -->
 
+<!-- professional-meta:start -->
+<div align="center">
+
+[![ci](https://github.com/honeyamn10-source/pos/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/honeyamn10-source/pos/actions/workflows/ci.yml) [![codeql](https://github.com/honeyamn10-source/pos/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/honeyamn10-source/pos/actions/workflows/codeql.yml) [![server kits](https://github.com/honeyamn10-source/pos/actions/workflows/server-kits.yml/badge.svg?branch=main)](https://github.com/honeyamn10-source/pos/actions/workflows/server-kits.yml)
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+
+[Documentation](docs) · [Integrations](integrations) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
+
+</div>
+<!-- professional-meta:end -->
+
 
 A self-hosted restaurant register for cash sales, table checks, kitchen batches, pickup requests and daily store operations.
 
