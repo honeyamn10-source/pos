@@ -32,6 +32,22 @@ A self-hosted restaurant register for cash sales, table checks, kitchen batches,
 
 [Project website](https://honeyamn10-source.github.io/pos/) · [Source](https://github.com/honeyamn10-source/pos) · [Build results](https://github.com/honeyamn10-source/pos/actions) · [Issues](https://github.com/honeyamn10-source/pos/issues)
 
+<!-- architecture-showcase:start -->
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Restaurant UI] --> B[Next.js application]
+    B --> C[Standalone Node server / managed Worker]
+    C --> D[(Store database)]
+    C --> E[Kitchen + order workflows]
+    C --> F[Integration adapters]
+    F --> G[Online ordering / external services]
+```
+
+The repository supports separate deployment paths; external payment, phone and printer integrations require their own live configuration and validation.
+<!-- architecture-showcase:end -->
+
 ## What it does
 
 - **Take the order.** Build takeaway or table checks with quantities and preparation notes.
